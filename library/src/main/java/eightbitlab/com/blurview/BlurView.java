@@ -31,17 +31,24 @@ public class BlurView extends FrameLayout {
 
     public BlurView(Context context) {
         super(context);
-        init(null, 0);
+        init();
+        //init(null, 0);
     }
 
     public BlurView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(attrs, 0);
+        init();
+        //init(attrs, 0);
     }
 
     public BlurView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(attrs, defStyleAttr);
+        init();
+        //init(attrs, defStyleAttr);
+    }
+
+    private void init() {
+        overlayColor = TRANSPARENT;
     }
 
     private void init(AttributeSet attrs, int defStyleAttr) {
@@ -107,6 +114,16 @@ public class BlurView extends FrameLayout {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     public BlurViewFacade setupWith(@NonNull ViewGroup rootView) {
         return setupWith(rootView, getBlurAlgorithm());
+    }
+
+    /**
+     * Same as setupWith(ViewGroup) but forces using RenderScriptBlur regardless of Android version
+     * @param rootView root to start blur from
+     * @return {@link BlurView} to setup needed params.
+     */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public BlurViewFacade setupWithCompatible(@NonNull ViewGroup rootView) {
+        return setupWith(rootView, new RenderScriptBlur(getContext()));
     }
 
     // Setters duplicated to be able to conveniently change these settings outside of setupWith chain
